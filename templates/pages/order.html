@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+ 
+{% block main %}
+ 
+<div class="container my-5">
+  <div class="row">
+    <div class="col-12">
+      <h1>Order</h1>
+      <h2 class="my-4">注文情報</h2>
+      <table class="table mb-5">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">No.</th>
+            <td>{{object.pk}}</td>
+          </tr>
+          <tr>
+            <th scope="row">イベント</th>
+            <td>{{object.event_name}}</td>
+          </tr>
+          <tr>
+            <th scope="row">単価</th>
+            <td>{{object.price}}</td>
+          </tr>
+          <tr>
+            <th scope="row">枚数</th>
+            <td>{{object.quantity}}</td>
+          </tr>
+          <tr>
+            <th scope="row">金額</th>
+            <td>{{object.amount}}</td>
+          </tr>
+          <tr>
+            <th scope="row">税込</th>
+            <td>{{object.tax_included}}</td>
+          </tr>
+ 
+          <tr>
+            <th scope="row">注文確定日</th>
+            <td>{{object.created_at|date:"Y-m-d f"}}</td>
+          </tr>
+          <tr>
+            <th scope="row">UID</th>
+            <td>{{object.uid}}</td>
+          </tr>
+         
+        </tbody>
+      </table>
+ 
+    </div>
+  </div>
+</div>
+ 
+{% endblock %}

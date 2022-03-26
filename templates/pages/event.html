@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+ 
+{% block main %}
+<div class="container">
+  <div class="row my-5">
+    <div class="col-12 col-lg-6">
+      <div class="bg-white border overflow-hidden">
+        <img src="/{{ object.image }}" width="100%">
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="border p-3 text-left text-dark overflow-hidden">
+        <h2 class="display-5">{{object.name}}</h2>
+        <p class="lead">
+          <a href="/distributors/{{object.distributor.slug}}/"
+            class="badge badge-pill badge-warning">{{object.distributor.name}}</a>
+          {% for artist in object.artist.all %}
+          <a href="/artists/{{artist.slug}}/" class="badge badge-pill badge-light">{{artist}}</a>
+          {% endfor %}
+        </p>
+
+        <p class="lead">¥{{object.price}}（税別）</p>
+        <p class="lead">{{object.description}}</p>
+        <form action="/pay/checkout/" method="POST" class="">
+          {% csrf_token %}
+          <input type="hidden" name="event_pk" value="{{object.pk}}">
+          <p>
+            <input type="number" class="form-control d-inline w-25" name="quantity" value="1" max="{{object.stock}}"> 点
+          </p>
+          <button type="submit" class="btn btn-info">Checkout</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
