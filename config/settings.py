@@ -10,10 +10,10 @@ env = environ.Env()
 root = environ.Path(BASE_DIR / 'secrets')
 
 # 開発環境用
-env.read_env(root('.env.dev'))
+# env.read_env(root('.env.dev'))
 
 # 本番環境用
-# env.read_env(root('.env.prod'))
+env.read_env(root('.env.prod'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
