@@ -27,21 +27,27 @@ urlpatterns = [
     path('logout/', LogoutView.as_view()),
     path('signup/', views.SignUpView.as_view()),
     path('account/', views.AccountUpdateView.as_view()),
+    path('guest_login/', views.guest_login, name='guest_login'),
+    
  
     # Order
     path('orders/<str:pk>/', views.OrderDetailView.as_view()),
     path('orders/', views.OrderIndexView.as_view()),
+    path('my_ticket/', views.MyTicketView.as_view()),
+    path('ticket_detail/<str:pk>/', views.TicketDetailView.as_view(), name='ticket-detail'),
  
     # Pay
     path('pay/checkout/', views.PayWithStripe.as_view()),
     path('pay/success/', views.PaySuccessView.as_view()),
     path('pay/cancel/', views.PayCancelView.as_view()),
  
-    # Items
+    # Events
     path('events/<str:pk>/', views.EventDetailView.as_view()),
     path('artists/<str:pk>/', views.ArtistListView.as_view()),
     path('distributors/<str:pk>/', views.DistributorListView.as_view()),
+    path('tag/<str:pk>/', views.TagListView.as_view()),
 
 
-    path('', views.IndexListView.as_view()),
+    path('', views.IndexListView.as_view(), name="index"),
+    path ('search/', views.SearchEventListView.as_view(), name='search-event-list')
 ]

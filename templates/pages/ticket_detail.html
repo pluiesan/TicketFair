@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block main %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-6 bg-light text-center text-secondary overflow-hidden mx-auto py-5">
+      <h1 class="mb-3">{{object.ticket.event_id.name}}</h1>
+      <img src="data:image/png;base64,{{taskGraphBase64}}"/>
+      <p class="bg-secondary text-light col-6 mx-auto">{{object.ticket.name}}</p>
+      <p class="">{{object.user.username}}</p>
+      
+      {% if object.reference_number != 0 %}
+      <p class="h3">{{object.reference_number}} 番</p>
+      {% else %}
+      <p class="h3">番号は抽選中です</p>
+      {% endif %}
+        
+      <p class="bg-secondary text-light col-6 mx-auto" id="RealtimeClockArea"></p>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'javascripts/clock.js' %}"></script>
+{% endblock %}

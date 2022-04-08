@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
  
 {% block main %}
 <div class="container">
@@ -12,25 +13,47 @@
       <div class="border p-3 text-left text-dark overflow-hidden">
         <h2 class="display-5">{{object.name}}</h2>
         <p class="lead">
-          <a href="/distributors/{{object.distributor.slug}}/"
-            class="badge badge-pill badge-warning">{{object.distributor.name}}</a>
-          {% for artist in object.artist.all %}
-          <a href="/artists/{{artist.slug}}/" class="badge badge-pill badge-light">{{artist}}</a>
+          {% for tag in object.tag.all %}
+          <a href="/tag/{{tag.slug}}/" class="badge badge-pill badge-dark"># {{tag}}</a>
           {% endfor %}
         </p>
 
-        <p class="lead">¥{{object.price}}（税別）</p>
+        <section class="artist row mb-3">
+          <h6 class="col-2">出演者</h6>
+          {% for artist in object.artist.all %}
+          <a href="/artists/{{artist.slug}}/" class="col-2">{{artist}}</a>
+          {% endfor %}
+        </section>
+
+        <section class="distributor row mb-3">
+          <h6 class="col-2">販売元</h6>
+          <a href="/distributors/{{object.distributor.slug}}/"
+            class="col-2">{{object.distributor.name}}</a>
+        </section>
+
+        {% for ticket in object.ticket_set.all %}
+        <hr class="p-1">
+        <div class="d-flex sales-period">
+          <p class="pr-2">受付日時</p>
+          <p class="start-time">{{ticket.sold_at|date:"Y/m/j H:i:s"}}</p>
+          <p class="px-1">-</p>
+          <p class="end-time">{{ticket.end_at|date:"Y/m/j H:i:s"}}</p>
+        </div>
+        <p class="lead">{{ticket.name}} - ¥{{ticket.price}}（税別）</p>
         <p class="lead">{{object.description}}</p>
         <form action="/pay/checkout/" method="POST" class="">
           {% csrf_token %}
-          <input type="hidden" name="event_pk" value="{{object.pk}}">
+          <input type="hidden" name="ticket_pk" value="{{ticket.pk}}">
           <p>
-            <input type="number" class="form-control d-inline w-25" name="quantity" value="1" max="{{object.stock}}"> 点
+            <input type="number" class="form-control d-inline w-25" name="quantity" value="1" max="{{object.stock}}"> 枚
           </p>
-          <button type="submit" class="btn btn-info">Checkout</button>
+          <button id="checkout-button" type="submit" class="btn btn-info checkout-button">Checkout</button>
         </form>
+        {% endfor %}
       </div>
     </div>
   </div>
 </div>
+
+<script src="{% static 'javascripts/index.js' %}"></script>
 {% endblock %}

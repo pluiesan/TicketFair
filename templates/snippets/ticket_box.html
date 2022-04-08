@@ -1,0 +1,27 @@
+{% load static %}
+
+<a href="/events/{{object.ticket.event_id.pk}}/">
+  <div class="border">
+    <img src="/{{object.ticket.event_id.image}}" width="100%" class=" bg-white">
+    <div class="bg-light text-center text-secondary overflow-hidden">
+      <div class="my-2 pt-2">
+        <h2 class="lead">{{object.ticket.event_id.name}}</h2>
+      </div>
+      <p class="link-secondary text-muted my-0">{{object.ticket.event_id.event_time | date:"Y/m/j"}}</p>
+      <p class="link-secondary text-muted my-0">{{object.ticket.name}}</p>
+      <div class="reference-number link-secondary text-muted my-0">
+        {% if object.reference_number != 0 %}
+        <p class="">整理番号 {{object.reference_number}} 番</p>
+        {% else %}
+        <p class="">番号は抽選中です</p>
+        {% endif %}
+      </div>
+      <a href="{% url 'ticket-detail' object.pk %}">
+          <div class="d-grid gap-2 mx-auto pb-3">
+            <button type="button" class="btn btn-secondary">チケットを表示</button>
+          </div>
+      </a>
+    </div>
+    
+  </div>
+</a>
