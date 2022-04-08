@@ -11,10 +11,6 @@ gunicorn==20.1.0
 idna==3.3
 Pillow==9.0.1
 psycopg2==2.9.3
-<<<<<<< HEAD
-=======
-qrcode==7.3.1
->>>>>>> origin/main
 requests==2.27.1
 sqlparse==0.4.2
 stripe==2.68.0
