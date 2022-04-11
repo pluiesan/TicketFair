@@ -49,7 +49,11 @@
           <p>
             <input type="number" class="form-control d-inline w-25" name="quantity" value="1" max="{{object.stock}}"> 枚
           </p>
+          {% if ticket.stock == 0 %}
+          <button id="checkout-button" type="submit" class="btn btn-secondary checkout-button" disabled>完売</button>
+          {% else %}
           <button id="checkout-button" type="submit" class="btn btn-info checkout-button">Checkout</button>
+          {% endif %}
         </form>
         {% endfor %}
       </div>

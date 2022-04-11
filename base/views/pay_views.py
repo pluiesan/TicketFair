@@ -109,6 +109,8 @@ class PayWithStripe(LoginRequiredMixin, View):
             amount=ticket.price * quantity,
             tax_included=ticket.price * quantity * (settings.TAX_RATE + 1)
         )
+        if ticket.price == 0:
+            return redirect('pay-success')
  
         checkout_session = stripe.checkout.Session.create(
             customer_email=request.user.email,

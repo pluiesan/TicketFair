@@ -38,7 +38,7 @@ urlpatterns = [
  
     # Pay
     path('pay/checkout/', views.PayWithStripe.as_view()),
-    path('pay/success/', views.PaySuccessView.as_view()),
+    path('pay/success/', views.PaySuccessView.as_view(), name='pay-success'),
     path('pay/cancel/', views.PayCancelView.as_view()),
  
     # Events
