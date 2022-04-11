@@ -20,9 +20,11 @@
 
         <section class="artist row mb-3">
           <h6 class="col-2">出演者</h6>
-          {% for artist in object.artist.all %}
-          <a href="/artists/{{artist.slug}}/" class="col-2">{{artist}}</a>
-          {% endfor %}
+          <div class="row col-10">
+            {% for artist in object.artist.all %}
+            <a href="/artists/{{artist.slug}}/" class="col-md-4">{{artist}}</a>
+            {% endfor %}
+          </div>
         </section>
 
         <section class="distributor row mb-3">
