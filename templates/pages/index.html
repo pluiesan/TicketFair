@@ -4,9 +4,9 @@
  
 {% include 'snippets/headline.html' %}
 
-<div class="col-6 mx-auto my-3">
+<div class="col-8 mx-auto my-3">
   <form action="{% url 'search-event-list' %}" method="GET" class="d-flex">
-    <input class="form-control me-2" type="text" name="query" placeholder="キーワードを入力" value="{{ query }}">
+    <input class="form-control me-2 mr-1" type="text" name="query" placeholder="キーワードを入力" value="{{ query }}">
     <input class="btn btn-outline-success" type="submit" value="検索">
   </form>
 </div>

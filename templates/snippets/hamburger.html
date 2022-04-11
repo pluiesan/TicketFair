@@ -1,0 +1,22 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hamburger.css' %}">
+<div class="openbtn1 d-md-none"><span></span><span></span><span></span></div>
+<nav id="g-nav">
+  <ul>
+    {% if user.is_authenticated %}
+    <li><a href="/my_ticket/">MyTicket</a></li>
+    <li><a href="/orders/">Orders</a></li>
+    <li><a href="/account/">Account</a></li>
+    <li><a href="/logout/">Logout</a></li>
+    {% else %}
+    <li><a href="/login/">Login</a></li>
+    <li><a href="/guest_login/">GuestLogin</a></li>
+    <li><a href="/signup/">SignUp</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!--自作のJS-->
+<script src="{% static 'javascripts/hamburger.js' %}"></script>

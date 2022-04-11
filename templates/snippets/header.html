@@ -11,5 +11,10 @@
     <a class="py-2 d-none d-md-inline-block text-white" href="/guest_login/">GuestLogin</a>
     <a class="py-2 d-none d-md-inline-block text-white" href="/signup/">SignUp</a>
     {% endif %}
+    <div class="hamburger">
+      {% block hamburger %}
+      {% include 'snippets/hamburger.html' %}
+      {% endblock %}
+    </div>
   </nav>
-</div>
+</div> 
