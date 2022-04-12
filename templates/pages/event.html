@@ -9,11 +9,13 @@
         <img src="/{{ object.image }}" width="100%">
       </div>
       <div class="bookmark d-flex justify-content-center align-items-center">
+        {% if user.is_authenticated %}
         <p class="pr-2">ブックマーク</p>
         {% if bookmarked %}
          <a href="javascript:void(0)" id="bookmark" name="{{ object.pk }}" type="button"><i class="fas fa-lg fa-heart like-red"></i></a>
          {% else %}
          <a href="javascript:void(0)" id="bookmark" name="{{ object.pk }}" type="button"><i class="far fa-lg fa-heart"></i></a>
+         {% endif %}
          {% endif %}
       </div>
     </div>
