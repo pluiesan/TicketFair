@@ -1,6 +1,6 @@
 from base.forms import UserCreationForm
 from django.contrib import admin
-from base.models import Event, Ticket, Artist, Distributor, User, Order, MyTicket, Tag
+from base.models import Event, Ticket, Artist, Distributor, User, Order, MyTicket, Tag, Bookmark
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
@@ -39,5 +39,6 @@ admin.site.register(Ticket)
 admin.site.register(Artist)
 admin.site.register(Distributor)
 admin.site.register(Tag)
+admin.site.register(Bookmark)
 admin.site.register(User, CustomUserAdmin)
 admin.site.unregister(Group)

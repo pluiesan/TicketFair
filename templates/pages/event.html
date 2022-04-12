@@ -8,11 +8,20 @@
       <div class="bg-white border overflow-hidden">
         <img src="/{{ object.image }}" width="100%">
       </div>
+      <div class="bookmark d-flex justify-content-center align-items-center">
+        <p class="pr-2">ブックマーク</p>
+        {% if bookmarked %}
+         <a href="javascript:void(0)" id="bookmark" name="{{ object.pk }}" type="button"><i class="fas fa-lg fa-heart like-red"></i></a>
+         {% else %}
+         <a href="javascript:void(0)" id="bookmark" name="{{ object.pk }}" type="button"><i class="far fa-lg fa-heart"></i></a>
+         {% endif %}
+      </div>
     </div>
     <div class="col-12 col-lg-6">
       <div class="border p-3 text-left text-dark overflow-hidden">
         <h2 class="display-5">{{object.name}}</h2>
-        <p class="lead">
+        <p class="lead my-3">
+          
           {% for tag in object.tag.all %}
           <a href="/tag/{{tag.slug}}/" class="badge badge-pill badge-dark"># {{tag}}</a>
           {% endfor %}
@@ -62,4 +71,61 @@
 </div>
 
 <script src="{% static 'javascripts/index.js' %}"></script>
+
+<script type="text/javascript">
+  //cookie
+      function getCookie(name) {
+          var cookieValue = null;
+          if (document.cookie && document.cookie != '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                  var cookie = jQuery.trim(cookies[i]);
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+      var csrftoken = getCookie('csrftoken');
+  
+      function csrfSafeMethod(method) {
+          // these HTTP methods do not require CSRF protection
+          return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+      $.ajaxSetup({
+          crossDomain: false, // obviates need for sameOrigin test
+          beforeSend: function (xhr, settings) {
+              if (!csrfSafeMethod(settings.type)) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          }
+      });
+  
+      //いいねボタンが押されたら非同期通信を行う
+      $('#bookmark').on('click', function (event) {
+        event.preventDefault();
+          $.ajax({
+              type: 'POST',
+              url: "{% url 'bookmark' %}",
+              data: {
+                'event_id': $(this).attr('name'),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+              },
+              dataType: 'json',
+              success: function(response){
+                        selector = document.getElementsByName(response.event_id);
+                        if(response.bookmarked){
+                            $(selector).html("<i class='fas fa-lg fa-heart'></i>");
+                        }
+                        else {
+                            $(selector).html("<i class='far fa-lg fa-heart'></i>");
+                        }
+                      }
+             });
+      });
+  </script>
 {% endblock %}
+

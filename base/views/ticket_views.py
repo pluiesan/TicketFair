@@ -1,8 +1,10 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from base.models import Event, Artist, Distributor, Tag
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView, DetailView, View
+from base.models import Event, Artist, Distributor, Tag, Bookmark
 from django.db.models import Q
 from datetime import datetime
+from django.http import JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class IndexListView(ListView):
@@ -16,6 +18,16 @@ class IndexListView(ListView):
 class EventDetailView(DetailView):
     model = Event
     template_name = 'pages/event.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        bookmark = Bookmark.objects.filter(event=context['event'], user=self.request.user)
+        if bookmark.exists():
+            context['bookmarked'] = True
+        else:
+            context['bookmarked'] = False
+        print(context)
+        return context
 
 
 class ArtistListView(ListView):
@@ -34,7 +46,7 @@ class ArtistListView(ListView):
 
 
 class TagListView(ListView):
-    model = Tag
+    model = Event
     template_name = 'pages/list.html'
     paginate_by = 2
 
@@ -60,6 +72,22 @@ class DistributorListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = f"販売元 #{self.distributor.name}"
+        return context
+
+
+class BookmarkListView(LoginRequiredMixin, ListView):
+    model = Event
+    template_name = 'pages/list.html'
+    paginate_by = 2
+
+    def get_queryset(self):
+        bookmarks = Bookmark.objects.filter(user=self.request.user)
+        bookmark_list = [bookmark.event.id for bookmark in bookmarks]
+        return Event.objects.filter(is_published=True, id__in=bookmark_list)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'ブックマークしたイベント'
         return context
 
 
@@ -91,3 +119,24 @@ class SearchEventListView(ListView):
         context["title"] = f"{self.query}の検索結果 {self.event_count}件"
 
         return context
+
+
+class BookmarkView(View):
+    def post(self, request, *args, **kwargs):
+        event = get_object_or_404(Event, pk=request.POST.get('event_id'))
+        user = request.user
+        bookmarked = False
+        bookmark = Bookmark.objects.filter(event=event, user=user)
+        if bookmark.exists():
+            bookmark.delete()
+        else:
+            bookmark.create(event=event, user=user)
+            bookmarked = True
+    
+        context = {
+            'event_id': event.id,
+            'bookmarked': bookmarked,
+            # 'count': bookmark.like_set.count(),
+        }
+
+        return JsonResponse(context)

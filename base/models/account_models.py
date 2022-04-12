@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from base.models import create_id
+from django.utils.crypto import get_random_string
+
+def create_id():
+    return get_random_string(22)
  
  
 class UserManager(BaseUserManager):

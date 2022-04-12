@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.crypto import get_random_string
 import os
+from .account_models import User
 
 
 def create_id():
@@ -71,3 +72,9 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.event_id.name  + ' ' + self.name 
+
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)

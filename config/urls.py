@@ -14,9 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from base import views
 from django.contrib.auth.views import LogoutView
+from django.conf import settings
 
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     path('signup/', views.SignUpView.as_view()),
     path('account/', views.AccountUpdateView.as_view()),
     path('guest_login/', views.guest_login, name='guest_login'),
+    path('account/bookmark/', views.BookmarkListView.as_view(), name='my-bookmarks'),
     
  
     # Order
@@ -46,8 +48,15 @@ urlpatterns = [
     path('artists/<str:pk>/', views.ArtistListView.as_view()),
     path('distributors/<str:pk>/', views.DistributorListView.as_view()),
     path('tag/<str:pk>/', views.TagListView.as_view()),
+    path('bookmark/', views.BookmarkView.as_view(), name='bookmark'),
 
 
     path('', views.IndexListView.as_view(), name="index"),
-    path ('search/', views.SearchEventListView.as_view(), name='search-event-list')
+    path('search/', views.SearchEventListView.as_view(), name='search-event-list')
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
